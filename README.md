@@ -1,13 +1,13 @@
-proyectoCGI
+#proyectoCGI
 
 Author: María Fernández
 
-Description:
+##Description:
 
 This proyect use CGI-Perl for find a param (categoria) of both files. And show the products with the same caracters of the param. 
 
 
-Requirements: 
+##Requirements: 
 
 -The files must be on /tmp.
 
