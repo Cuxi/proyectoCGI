@@ -20,7 +20,7 @@ if ($query->param('categoria')){
 
 	#recogemos el parámetro categoría del formulario y recorremos el fichero para corroborar que existe la categoria
 	$categoria=$query->param('categoria');
-	$filename="/home/alumnado/tmp/Categorias";
+	$filename="Categorias";
 	open F, $filename or die "Imposible abrir: $!";
 	$size= -s $filename;
 	read(F,$buf,$size);
@@ -36,7 +36,7 @@ if ($query->param('categoria')){
 			print $query->h1('Categoria:',$categoria);
 			print $query->h1('Existe');
 			#recoremos el fichero de productos para imprimir los datos de aquellos que coinciden con la categoría
-			$filenamedos="/home/alumnado/TP1";
+			$filenamedos="TP1";
 			open F, $filenamedos or die "Imposible abrir: $!";
 			$size= -s $filenamedos;
 			read(F,$buf,$size);
