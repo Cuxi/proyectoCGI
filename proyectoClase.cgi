@@ -1,3 +1,4 @@
+#!/usr/bin/perl -w
 use CGI;
 $query = new CGI;
 #declaramos la entrada del CGI
@@ -26,15 +27,9 @@ if ($query->param('categoria')){
 	read(F,$buf,$size);
 	close F;
 	my @cat=split("\n",$buf);
-	#metemos las categorías en un array
-	foreach my $n (@cat){
-		push @cat, $n;	
-	}
-	foreach $cla(keys %cat) {
+	foreach $cla (@cat) {
 		#comparamos el array de categorias con el parámetro recibido
 	   if($categoria =~ $cla){
-			print $query->h1('Categoria:',$categoria);
-			print $query->h1('Existe');
 			#recoremos el fichero de productos para imprimir los datos de aquellos que coinciden con la categoría
 			$filenamedos="/tmp/TP1";
 			open F, $filenamedos or die "Imposible abrir: $!";
@@ -43,7 +38,7 @@ if ($query->param('categoria')){
 			close F;
 			@lineas=split("\n",$buf);
 			foreach $l (@lineas) {
-				$ca=split("-",$l);
+				($ca)=split("-",$l);
 				if($ca =~ $categoria){
 					@campos=split(":",$l);
 					#guardamos los datos en un hash
@@ -53,16 +48,11 @@ if ($query->param('categoria')){
 			}
 			# mostramos el contenido del hash
 			foreach $clave(keys %unhash) {
-			   print $clave, "----->",$unhash{$clave},"\n";
+                           print $query->h3($clave, "----->",$unhash{$clave},"\n");
 			}
-		}else{
-			#en caso de que no exista no entramos en recorrer el fichero
-			print $query->h1('Categoria:',$categoria);
-			print $query->h1('No existe');
 		}
 	}
 
 
 }
-
 print $query->end_html;
