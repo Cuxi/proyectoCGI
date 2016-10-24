@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 use CGI;
 $query = new CGI;
 #declaramos la entrada del CGI
@@ -17,7 +19,7 @@ if (!$query->param) {
 
 
 if ($query->param('categoria')){
-
+	$false;
 	#recogemos el parámetro categoría del formulario y recorremos el fichero para corroborar que existe la categoria
 	$categoria=$query->param('categoria');
 	$filename="/tmp/Categorias";
@@ -26,42 +28,45 @@ if ($query->param('categoria')){
 	read(F,$buf,$size);
 	close F;
 	my @cat=split("\n",$buf);
-	#metemos las categorías en un array
-	foreach my $n (@cat){
-		push @cat, $n;	
-	}
-	foreach $cla(keys %cat) {
+	
+	foreach $cla(@cat) {
+
 		#comparamos el array de categorias con el parámetro recibido
 	   if($categoria =~ $cla){
-			print $query->h1('Categoria:',$categoria);
-			print $query->h1('Existe');
 			#recoremos el fichero de productos para imprimir los datos de aquellos que coinciden con la categoría
-			$filenamedos="/tmp/TP1";
-			open F, $filenamedos or die "Imposible abrir: $!";
-			$size= -s $filenamedos;
-			read(F,$buf,$size);
-			close F;
-			@lineas=split("\n",$buf);
+			$fileproductos="/tmp/TP1";
+			open Fi, $fileproductos or die "Imposible abrir: $!";
+			$sizes= -s $fileproductos;
+			read(Fi,$buff,$sizes);
+			close Fi;
+			@lineas=split("\n",$buff);
 			foreach $l (@lineas) {
-				$ca=split("-",$l);
+				($ca)=split("-",$l);
 				if($ca =~ $categoria){
 					@campos=split(":",$l);
 					#guardamos los datos en un hash
 			   		$unhash{$campos[0]}=$campos[1] if($campos[1]);
+			   		$false='t';
 				}
+
 			   	
 			}
 			# mostramos el contenido del hash
 			foreach $clave(keys %unhash) {
-			   print $clave, "----->",$unhash{$clave},"\n";
+			   print $query->h3($clave, "----->",$unhash{$clave},"\n");
 			}
 		}else{
-			#en caso de que no exista no entramos en recorrer el fichero
-			print $query->h1('Categoria:',$categoria);
-			print $query->h1('No existe');
+			$false='f';
 		}
-	}
 
+
+
+	}
+	if($false=='f'){
+		#en caso de que no exista no entramos en recorrer el fichero
+		print $query->h1('Categoria:',$categoria);
+		print $query->h1('No existe');
+	}
 
 }
 
